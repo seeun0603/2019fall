@@ -1,0 +1,56 @@
+<!-- 10/26 김영환 작성 -->
+{% extends 'products/index.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% block title %}Chang-Won{% endblock %}
+
+<!-- sidebar title 김영환 -->
+{% block sidebar_title %}<h3>게시판</h3>{{kind}}{% endblock %}
+
+
+<!-- sidebar_category 김영환 -->
+{% block sidebar_category %}
+    {% for i in category %}
+    <li>
+        <a class="kinds" href="/board?kind={{i.name}}">{{ i }}</a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+{% block sidebar_custom_btn %}
+<div class="container">
+    <a class="btn btn-dark" href="{% url 'create_board' %}" style="margin-bottom: 8px;" >새 글쓰기</a>
+</div>
+{% endblock %}
+
+<!-- sidebar_content -->
+{% block product %}
+<div class="container">
+    <table class="table table-striped" style="text-align:center;">
+        <thead class="thead-dark">
+            <tr class="custom-col">
+                <th scope="col" class=""style="width: 20%;">작성자</th>
+                <th scope="col" class="" style="width: 50%;">제목</th>
+                <th scope="col" class="custom-col-remove" style="width: 25%;">날짜</th>
+                <th scope="col" class="custom-col-remove" style="width: 30%;">조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for board in contacts %}
+            <tr onclick="location.href='{% url 'read_board' board.id %}'" class="custom-col">
+                
+                <th scope="row" class="">{{board.getNickName}}</th>
+                <td style="overflow:hidden">{{board.getSubject}}</td>
+                {%if board.ifmodify == 'n'%}
+                    <td class="custom-col-remove">{{board.getYMD}}</td>
+                {%else%}
+                    <td class="custom-col-remove">{{board.getUpdateYMD}}</td>
+                {%endif%}
+                <td class="custom-col-remove">{{board.hit}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block custom_modal %}{% endblock %}
